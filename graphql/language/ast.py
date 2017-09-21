@@ -167,16 +167,17 @@ class Selection(Node):
 
 
 class Field(Selection):
-    __slots__ = ('loc', 'alias', 'name', 'arguments', 'directives', 'selection_set',)
+    __slots__ = ('loc', 'alias', 'name', 'arguments', 'directives', 'selection_set', 'ancestor',)
     _fields = ('alias', 'name', 'arguments', 'directives', 'selection_set',)
 
-    def __init__(self, name, alias=None, arguments=None, directives=None, selection_set=None, loc=None):
+    def __init__(self, name, alias=None, arguments=None, directives=None, selection_set=None, loc=None, ancestor=None):
         self.loc = loc
         self.alias = alias
         self.name = name
         self.arguments = arguments
         self.directives = directives
         self.selection_set = selection_set
+        self.ancestor = ancestor
 
     def __eq__(self, other):
         return (

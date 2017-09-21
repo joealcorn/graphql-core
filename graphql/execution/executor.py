@@ -125,6 +125,15 @@ def execute_fields_serially(exe_context, parent_type, source_value, fields):
 
     return functools.reduce(execute_field, fields.keys(), Promise.resolve(collections.OrderedDict()))
 
+def populate_ancestors(field_asts):
+    for field in field_asts:
+        if not field.selection_set:
+            continue
+
+        for subfield in field.selection_set.selections:
+            subfield.ancestor = field
+
+
 
 def execute_fields(exe_context, parent_type, source_value, fields):
     contains_promise = False
@@ -132,6 +141,8 @@ def execute_fields(exe_context, parent_type, source_value, fields):
     final_results = OrderedDict()
 
     for response_name, field_asts in fields.items():
+        populate_ancestors(field_asts)
+
         result = resolve_field(exe_context, parent_type, source_value, field_asts)
         if result is Undefined:
             continue

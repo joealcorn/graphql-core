@@ -11,10 +11,15 @@ def format_error(error):
     if error.nodes:
         node = error.nodes[0]
         path = [node]
-        while node.ancestor:
+        # todo: FragmentSpread has no ancestor yet
+        while getattr(node, 'ancestor', None):
             node = node.ancestor
             path.insert(0, node)
 
-        formatted_error['path'] = [(n.alias or n.name).value for n in path]
+        try:
+            formatted_error['path'] = [getattr(n, 'alias', getattr(n, 'name')).value for n in  path]
+        except AttributeError:
+            pass
+
 
     return formatted_error

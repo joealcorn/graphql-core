@@ -1,3 +1,4 @@
+from datetime import datetime
 import time
 
 
@@ -17,11 +18,11 @@ class TracingMiddleware(object):
 
     @property
     def start_time_str(self):
-        return time.strftime(self.DATETIME_FORMAT, time.gmtime(self.start_time/1000))
+        return datetime.fromtimestamp(self.start_time / 1000).strftime(self.DATETIME_FORMAT)
 
     @property
     def end_time_str(self):
-        return time.strftime(self.DATETIME_FORMAT, time.gmtime(self.end_time/1000))
+        return datetime.fromtimestamp(self.end_time / 1000).strftime(self.DATETIME_FORMAT)
 
     @property
     def duration(self):

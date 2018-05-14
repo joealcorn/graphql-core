@@ -54,7 +54,8 @@ def execute(schema, document_ast, root_value=None, context_value=None,
         tracing_middleware.start()
 
         if middleware:
-            middleware.middlewares.insert(0, tracing_middleware)
+            # reinstantiate our MiddlewareManager so the resolvers are discovered
+            middleware = MiddlewareManager(*(tracing_middleware,) + middleware.middlewares)
         else:
             middleware = MiddlewareManager(tracing_middleware)
 

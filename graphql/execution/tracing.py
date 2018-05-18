@@ -11,18 +11,18 @@ class TracingMiddleware(object):
         self.end_time = None
 
     def start(self):
-        self.start_time = time.time() * 1000
+        self.start_time = time.time()
 
     def end(self):
-        self.end_time = time.time() * 1000
+        self.end_time = time.time()
 
     @property
     def start_time_str(self):
-        return datetime.fromtimestamp(self.start_time / 1000).strftime(self.DATETIME_FORMAT)
+        return datetime.fromtimestamp(self.start_time).strftime(self.DATETIME_FORMAT)
 
     @property
     def end_time_str(self):
-        return datetime.fromtimestamp(self.end_time / 1000).strftime(self.DATETIME_FORMAT)
+        return datetime.fromtimestamp(self.end_time).strftime(self.DATETIME_FORMAT)
 
     @property
     def duration(self):
@@ -49,14 +49,14 @@ class TracingMiddleware(object):
             return _next(root, info, *args, **kwargs)
         finally:
             end = time.time()
-            elapsed_ms = (end - start) * 1000
+            elapsed_ns = (end - start) * 1e9
 
             stat = {
                 "path": info.path,
                 "parentType": str(info.parent_type),
                 "fieldName": info.field_name,
                 "returnType": str(info.return_type),
-                "startOffset": (time.time() * 1000) - self.start_time,
-                "duration": elapsed_ms,
+                "startOffset": (time.time() - self.start_time) * 1e9,
+                "duration": elapsed_ns,
             }
             self.resolver_stats.append(stat)

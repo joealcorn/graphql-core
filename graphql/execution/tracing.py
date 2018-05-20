@@ -56,7 +56,7 @@ class TracingMiddleware(object):
                 "parentType": str(info.parent_type),
                 "fieldName": info.field_name,
                 "returnType": str(info.return_type),
-                "startOffset": (time.time() - self.start_time) * 1e9,
+                "startOffset": (start - self.start_time) * 1e9,
                 "duration": elapsed_ns,
             }
             self.resolver_stats.append(stat)

@@ -29,7 +29,7 @@ class TracingMiddleware(object):
         if not self.end_time:
             raise ValueError("Tracing has not ended yet!")
 
-        return (self.end_time - self.start_time)
+        return (self.end_time - self.start_time) * 1e9
 
     @property
     def tracing_dict(self):

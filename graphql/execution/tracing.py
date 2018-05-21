@@ -10,11 +10,14 @@ class TracingMiddleware(object):
         self.start_time = None
         self.end_time = None
 
+    def current_timestamp(self):
+        return (datetime.utcnow() - datetime(1970, 1, 1)).total_seconds()
+
     def start(self):
-        self.start_time = time.time()
+        self.start_time = self.current_timestamp()
 
     def end(self):
-        self.end_time = time.time()
+        self.end_time = self.current_timestamp()
 
     @property
     def start_time_str(self):
@@ -44,11 +47,11 @@ class TracingMiddleware(object):
         )
 
     def resolve(self, _next, root, info, *args, **kwargs):
-        start = time.time()
+        start = self.current_timestamp()
         try:
             return _next(root, info, *args, **kwargs)
         finally:
-            end = time.time()
+            end = self.current_timestamp()
             elapsed_ns = (end - start) * 1e9
 
             stat = {

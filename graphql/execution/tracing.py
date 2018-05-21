@@ -21,11 +21,11 @@ class TracingMiddleware(object):
 
     @property
     def start_time_str(self):
-        return datetime.fromtimestamp(self.start_time).strftime(self.DATETIME_FORMAT)
+        return datetime.utcfromtimestamp(self.start_time).strftime(self.DATETIME_FORMAT)
 
     @property
     def end_time_str(self):
-        return datetime.fromtimestamp(self.end_time).strftime(self.DATETIME_FORMAT)
+        return datetime.utcfromtimestamp(self.end_time).strftime(self.DATETIME_FORMAT)
 
     @property
     def duration(self):
